@@ -14,11 +14,9 @@ class CreateUserUseCase {
     email,
     name,
     password,
-    username,
   }: ICreateUserDTO): Promise<void> {
     await this.usersRepository.create({
       name,
-      username,
       email,
       password,
       driver_license,
