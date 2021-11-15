@@ -10,15 +10,18 @@ import { IStorageProvider } from './StorageProvider/IStorageProvider';
 
 container.registerSingleton<IDateProvider>(
   'DayjsDateProvider',
+
   DayjsDateProvider
 );
 
 container.registerInstance<IMailProvider>(
   'EtherealMailProvider',
+
   new EtherealMailProvider()
 );
 
 container.registerSingleton<IStorageProvider>(
   'StorageProvider',
+
   S3StorageProvider
 );

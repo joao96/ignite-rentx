@@ -24,13 +24,19 @@ class S3StorageProvider implements IStorageProvider {
     const ContentType = mime.getType(originalName);
 
     await this.client
+
       .putObject({
         Bucket: `${process.env.AWS_BUCKET}/${folder}`,
+
         Key: file,
+
         ACL: 'public-read',
+
         Body: fileContent,
+
         ContentType,
       })
+
       .promise();
 
     await fs.promises.unlink(originalName);
@@ -40,10 +46,13 @@ class S3StorageProvider implements IStorageProvider {
 
   async delete(file: string, folder: string): Promise<void> {
     await this.client
+
       .deleteObject({
         Bucket: `${process.env.AWS_BUCKET}/${folder}`,
+
         Key: file,
       })
+
       .promise();
   }
 }
