@@ -20,6 +20,7 @@ class UserMap {
       id,
       avatar_url,
     });
+
     return user;
   }
 }

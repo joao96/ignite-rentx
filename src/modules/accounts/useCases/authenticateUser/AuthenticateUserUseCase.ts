@@ -10,15 +10,19 @@ import { AppError } from '@shared/errors/AppError';
 
 interface IRequest {
   email: string;
+
   password: string;
 }
 
 interface IResponse {
   user: {
     name: string;
+
     email: string;
   };
+
   token: string;
+
   refresh_token: string;
 }
 
@@ -26,8 +30,10 @@ interface IResponse {
 class AuthenticateUserUseCase {
   constructor(
     @inject('UsersRepository') private usersRepository: IUsersRepository,
+
     @inject('UsersTokensRepository')
     private usersTokensRepository: IUsersTokensRepository,
+
     @inject('DayjsDateProvider')
     private dateProvider: IDateProvider
   ) {}

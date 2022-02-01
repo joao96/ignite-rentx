@@ -8,16 +8,23 @@ import { CreateUserUseCase } from '../createUser/CreateUserUseCase';
 import { AuthenticateUserUseCase } from './AuthenticateUserUseCase';
 
 let authenticateUserUseCase: AuthenticateUserUseCase;
+
 let usersRepositoryInMemory: UsersRepositoryInMemory;
+
 let usersTokensRepositoryInMemory: UsersTokensRepositoryInMemory;
+
 let createUserUseCase: CreateUserUseCase;
+
 let dateProvider: DayjsDateProvider;
 
 describe('Authenticate User', () => {
   beforeEach(() => {
     usersRepositoryInMemory = new UsersRepositoryInMemory();
+
     usersTokensRepositoryInMemory = new UsersTokensRepositoryInMemory();
+
     dateProvider = new DayjsDateProvider();
+
     authenticateUserUseCase = new AuthenticateUserUseCase(
       usersRepositoryInMemory,
       usersTokensRepositoryInMemory,

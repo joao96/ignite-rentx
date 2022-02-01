@@ -2,6 +2,7 @@ import { Specification } from '@modules/cars/infra/typeorm/entities/Specificatio
 
 interface ICreateSpecificationDTO {
   name: string;
+
   description: string;
 }
 

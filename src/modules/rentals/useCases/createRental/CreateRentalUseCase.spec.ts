@@ -8,7 +8,9 @@ import { AppError } from '@shared/errors/AppError';
 import { CreateRentalUseCase } from './CreateRentalUseCase';
 
 let createRentalUseCase: CreateRentalUseCase;
+
 let rentalsRepositoryInMemory: RentalsRepositoryInMemory;
+
 let carsRepositoryInMemory: CarsRepositoryInMemory;
 
 let dayJsDateProvider: DayjsDateProvider;
@@ -18,11 +20,16 @@ describe('Create Rental', () => {
 
   beforeEach(() => {
     rentalsRepositoryInMemory = new RentalsRepositoryInMemory();
+
     dayJsDateProvider = new DayjsDateProvider();
+
     carsRepositoryInMemory = new CarsRepositoryInMemory();
+
     createRentalUseCase = new CreateRentalUseCase(
       rentalsRepositoryInMemory,
+
       dayJsDateProvider,
+
       carsRepositoryInMemory
     );
   });
@@ -30,35 +37,48 @@ describe('Create Rental', () => {
   it('should be able to create a new rental', async () => {
     const car = await carsRepositoryInMemory.create({
       name: 'Test',
+
       description: 'Car Test',
+
       daily_rate: 100,
+
       license_plate: 'test',
+
       fine_amount: 40,
+
       category_id: '1234',
+
       brand: 'brand',
     });
 
     const rental = await createRentalUseCase.execute({
       user_id: '12345',
+
       car_id: car.id,
+
       expected_return_date: dayAdd24Hours,
     });
 
     expect(rental).toHaveProperty('id');
+
     expect(rental).toHaveProperty('start_date');
   });
 
   it('should not be able to create a new rental for a user in an open rental', async () => {
     await rentalsRepositoryInMemory.create({
       car_id: '1111',
+
       expected_return_date: dayAdd24Hours,
+
       user_id: '12345',
     });
 
     await expect(
       createRentalUseCase.execute({
         user_id: '12345',
+
         car_id: '121212',
+
         expected_return_date: dayAdd24Hours,
       })
     ).rejects.toEqual(
@@ -69,14 +89,18 @@ describe('Create Rental', () => {
   it('should not be able to create a new rental for a car in an open rental', async () => {
     await rentalsRepositoryInMemory.create({
       car_id: 'test',
+
       expected_return_date: dayAdd24Hours,
+
       user_id: '12345',
     });
 
     await expect(
       createRentalUseCase.execute({
         user_id: '321',
+
         car_id: 'test',
+
         expected_return_date: dayAdd24Hours,
       })
     ).rejects.toEqual(new AppError('Car is not available.'));
@@ -86,7 +110,9 @@ describe('Create Rental', () => {
     await expect(
       createRentalUseCase.execute({
         user_id: '123',
+
         car_id: 'test',
+
         expected_return_date: dayjs().toDate(),
       })
     ).rejects.toEqual(new AppError('Invalid return time.'));

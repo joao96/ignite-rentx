@@ -8,7 +8,6 @@ import { AppError } from '@shared/errors/AppError';
 
 interface IRequest {
   id: string;
-  user_id: string;
 }
 
 @injectable()
@@ -16,13 +15,15 @@ class DevolutionRentalUseCase {
   constructor(
     @inject('RentalsRepository')
     private rentalsRepository: IRentalsRepository,
+
     @inject('DayjsDateProvider')
     private dateProvider: IDateProvider,
+
     @inject('CarsRepository')
     private carsRepository: ICarsRepository
   ) {}
 
-  async execute({ id, user_id }: IRequest): Promise<Rental> {
+  async execute({ id }: IRequest): Promise<Rental> {
     const minimum_daily = 1;
 
     const rental = await this.rentalsRepository.findById(id);
@@ -43,6 +44,7 @@ class DevolutionRentalUseCase {
 
     const delayInDays = this.dateProvider.compareInDays(
       dateNow,
+
       rental.expected_return_date
     );
 
@@ -50,15 +52,18 @@ class DevolutionRentalUseCase {
 
     if (delayInDays > 0) {
       const calculate_fine = delayInDays * car.fine_amount;
+
       total = calculate_fine;
     }
 
     total += daily * car.daily_rate;
 
     rental.end_date = this.dateProvider.dateNow();
+
     rental.total = total;
 
     await this.rentalsRepository.create(rental);
+
     await this.carsRepository.updateAvailability(car.id, true);
 
     return rental;

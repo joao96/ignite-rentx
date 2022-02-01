@@ -7,21 +7,32 @@ import { AppError } from '@shared/errors/AppError';
 import { SendForgotPasswordMailUseCase } from './SendForgotPasswordMailUseCase';
 
 let usersRepositoryInMemory: UsersRepositoryInMemory;
+
 let dateProvider: DayjsDateProvider;
+
 let usersTokensRepositoryInMemory: UsersTokensRepositoryInMemory;
+
 let mailProvider: MailProviderInMemory;
+
 let sendForgotPasswordMailUseCase: SendForgotPasswordMailUseCase;
 
 describe('Send Forgot Password Mail', () => {
   beforeEach(() => {
     usersRepositoryInMemory = new UsersRepositoryInMemory();
+
     dateProvider = new DayjsDateProvider();
+
     usersTokensRepositoryInMemory = new UsersTokensRepositoryInMemory();
+
     mailProvider = new MailProviderInMemory();
+
     sendForgotPasswordMailUseCase = new SendForgotPasswordMailUseCase(
       usersRepositoryInMemory,
+
       usersTokensRepositoryInMemory,
+
       dateProvider,
+
       mailProvider
     );
   });
